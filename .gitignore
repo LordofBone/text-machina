@@ -1,0 +1,15 @@
+./idea
+
+# exclude everything
+models/gpt/*
+
+# exception to the rule
+!models/gpt/gpt2/.gitkeep
+!models/gpt/gpt2-medium/.gitkeep
+!models/gpt/gpt2-large/.gitkeep
+
+.idea
+
+data/seeds/*
+
+!data/seeds/.gitkeep

@@ -1,0 +1,137 @@
+import threading
+import tkinter as tk
+from pathlib import Path
+from tkinter import *
+from tkinter import ttk
+
+from config.gui_config import *
+from config.gpt2_config import gpt2_models, gpt2_size
+from ml.ml_functions import run_sentence_completion
+from ml.download_model import get_and_save_models
+
+
+class GUIController:
+    def __init__(self):
+        self.root = Tk()
+
+        self.root.title(window_title)
+
+        self.root.configure(bg=window_background_colour)
+
+        self.root.wm_state(window_setting)
+
+        self.root.geometry("800x600")
+
+        self.style = ttk.Style(self.root)
+
+        self.style.theme_use("clam")
+
+        self.person_reply = tk.StringVar()
+
+        self.updates = []
+
+        self.ind = 0
+        self.prev_ind = 0
+
+        self.frame_style = ttk.Style()
+        self.frame_style.configure('TLabelframe', background=window_background_colour)
+
+        self.screen_chat_frame = ttk.LabelFrame(self.root)
+        self.screen_chat_frame.pack(side="bottom", fill="both", expand="yes")
+        self.screen_chat_frame.config(text="Enter Text to Complete")
+
+        self.text_output = Text(self.root, height=100, width=200)
+        self.text_output.pack(side="top")
+        self.text_output.configure(background=item_colours, foreground=text_colour)
+
+        self.text_entry = ttk.Entry(self.screen_chat_frame, textvariable=self.person_reply)
+        self.text_entry.pack(side="bottom")
+        self.text_entry.configure(width=100)
+
+        self.model_option = StringVar(self.screen_chat_frame)
+
+        self.model_option_drop = ttk.OptionMenu(self.screen_chat_frame, self.model_option, gpt2_size.x,
+                                                command=self.change_model,
+                                                *gpt2_models)
+        self.model_option_drop.pack(side="right")
+
+        self.generate_button = ttk.Button(self.screen_chat_frame, text="Generate",
+                                          command=self.generate_button_threader)
+        self.generate_button.pack(side="left")
+        self.generate_button.configure()
+
+        self.download_button = ttk.Button(self.screen_chat_frame, text="Download",
+                                          command=self.download_button_threader)
+        self.download_button.pack(side="right")
+        self.download_button.configure()
+
+        self.progress_bar = ttk.Progressbar(self.screen_chat_frame, orient="horizontal", length=500,
+                                            mode="indeterminate")
+        self.progress_bar.pack(side="top")
+
+        self.root.bind('<Return>', lambda event: self.generate_button_threader())
+
+        self.path = Path(__file__).parent / "../images"
+
+        self.label = Label(self.root)
+
+    def generate_button_threader(self):
+        threading.Thread(target=self.generate_text, daemon=True).start()
+
+    def download_button_threader(self):
+        threading.Thread(target=self.download_model, daemon=True).start()
+
+    def download_model(self):
+        self.lock_interface()
+        self.screen_chat_frame.config(text="Downloading...")
+        self.progress_bar.start()
+        get_and_save_models()
+        self.progress_bar.stop()
+        self.screen_chat_frame.config(text="Enter Text to Complete")
+        self.unlock_interface()
+
+    def change_model(self, event):
+        gpt2_size.x = self.model_option.get()
+
+    def lock_interface(self):
+        self.generate_button.configure(state=DISABLED)
+        self.download_button.configure(state=DISABLED)
+        self.text_entry.configure(state=DISABLED)
+        self.model_option_drop.configure(state=DISABLED)
+
+    def unlock_interface(self):
+        self.generate_button.configure(state=NORMAL)
+        self.download_button.configure(state=NORMAL)
+        self.text_entry.configure(state=NORMAL)
+        self.model_option_drop.configure(state=NORMAL)
+
+    def generate_text(self):
+        self.lock_interface()
+        self.screen_chat_frame.config(text="Generating...")
+        self.text_output.delete('1.0', END)
+        self.progress_bar.start()
+
+        try:
+            generated_output = run_sentence_completion(self.person_reply.get())
+        except OSError:
+            get_and_save_models()
+            try:
+                generated_output = run_sentence_completion(self.person_reply.get())
+            except OSError:
+                raise Exception(f"Model {gpt2_size.x} not available, please check internet connection.")
+
+        self.progress_bar.stop()
+        self.text_output.insert(tk.END, f"{generated_output[1]}")
+        self.screen_chat_frame.config(text="Enter Text to Complete")
+        self.unlock_interface()
+        self.text_entry.delete(0, END)
+
+    def begin(self):
+        self.label.pack()
+
+        self.root.mainloop()
+
+
+if __name__ == "__main__":
+    gui_control = GUIController()
+    gui_control.begin()

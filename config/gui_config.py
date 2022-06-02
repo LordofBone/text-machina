@@ -1,0 +1,5 @@
+window_setting = "normal"
+window_background_colour = "GREEN"
+window_title = "Borg Queen"
+item_colours = "BLACK"
+text_colour = "WHITE"
