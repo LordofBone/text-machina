@@ -36,36 +36,36 @@ class GUIController:
         self.frame_style = ttk.Style()
         self.frame_style.configure('TLabelframe', background=window_background_colour)
 
-        self.screen_chat_frame = ttk.LabelFrame(self.root)
-        self.screen_chat_frame.pack(side="bottom", fill="both", expand="yes")
-        self.screen_chat_frame.config(text="Enter Text to Complete")
+        self.main_frame = ttk.LabelFrame(self.root)
+        self.main_frame.pack(side="bottom", fill="both", expand="yes")
+        self.main_frame.config(text="Enter Text to Complete")
 
         self.text_output = Text(self.root, height=100, width=200)
         self.text_output.pack(side="top")
         self.text_output.configure(background=item_colours, foreground=text_colour)
 
-        self.text_entry = ttk.Entry(self.screen_chat_frame, textvariable=self.person_reply)
+        self.text_entry = ttk.Entry(self.main_frame, textvariable=self.person_reply)
         self.text_entry.pack(side="bottom")
         self.text_entry.configure(width=100)
 
-        self.model_option = StringVar(self.screen_chat_frame)
+        self.model_option = StringVar(self.main_frame)
 
-        self.model_option_drop = ttk.OptionMenu(self.screen_chat_frame, self.model_option, gpt2_size.x,
+        self.model_option_drop = ttk.OptionMenu(self.main_frame, self.model_option, gpt2_size.x,
                                                 command=self.change_model,
                                                 *gpt2_models)
         self.model_option_drop.pack(side="right")
 
-        self.generate_button = ttk.Button(self.screen_chat_frame, text="Generate",
+        self.generate_button = ttk.Button(self.main_frame, text="Generate",
                                           command=self.generate_button_threader)
         self.generate_button.pack(side="left")
         self.generate_button.configure()
 
-        self.download_button = ttk.Button(self.screen_chat_frame, text="Download",
+        self.download_button = ttk.Button(self.main_frame, text="Download",
                                           command=self.download_button_threader)
         self.download_button.pack(side="right")
         self.download_button.configure()
 
-        self.progress_bar = ttk.Progressbar(self.screen_chat_frame, orient="horizontal", length=500,
+        self.progress_bar = ttk.Progressbar(self.main_frame, orient="horizontal", length=500,
                                             mode="indeterminate")
         self.progress_bar.pack(side="top")
 
@@ -83,11 +83,11 @@ class GUIController:
 
     def download_model(self):
         self.lock_interface()
-        self.screen_chat_frame.config(text="Downloading...")
+        self.main_frame.config(text="Downloading...")
         self.progress_bar.start()
         get_and_save_models()
         self.progress_bar.stop()
-        self.screen_chat_frame.config(text="Enter Text to Complete")
+        self.main_frame.config(text="Enter Text to Complete")
         self.unlock_interface()
 
     def change_model(self, event):
@@ -107,7 +107,7 @@ class GUIController:
 
     def generate_text(self):
         self.lock_interface()
-        self.screen_chat_frame.config(text="Generating...")
+        self.main_frame.config(text="Generating...")
         self.text_output.delete('1.0', END)
         self.progress_bar.start()
 
@@ -122,7 +122,7 @@ class GUIController:
 
         self.progress_bar.stop()
         self.text_output.insert(tk.END, f"{generated_output[1]}")
-        self.screen_chat_frame.config(text="Enter Text to Complete")
+        self.main_frame.config(text="Enter Text to Complete")
         self.unlock_interface()
         self.text_entry.delete(0, END)
 
