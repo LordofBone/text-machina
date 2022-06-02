@@ -1,9 +1,11 @@
 ./idea
 
-# exclude everything
-models/gpt/*
+# exclude models
+models/gpt/gpt2/*
+models/gpt/gpt2-medium/*
+models/gpt/gpt2-large/*
 
-# exception to the rule
+# keep the folders
 !models/gpt/gpt2/.gitkeep
 !models/gpt/gpt2-medium/.gitkeep
 !models/gpt/gpt2-large/.gitkeep
