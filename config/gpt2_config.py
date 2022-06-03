@@ -8,6 +8,11 @@ gpt2_models = ["gpt2", "gpt2-medium", "gpt2-large"]
 
 gpt2_size = Property()
 
+sampling_enable = True
+top_k_setting = 50
+top_p_setting = 0.95
+num_return_sequences_setting = 3
+
 output_length = Property()
 
 default_gpt2_size = gpt2_models[0]
