@@ -4,6 +4,10 @@ from config.gpt2_config import models_dir, gpt2_size
 
 
 def get_and_save_models():
+    """
+    Downloads the GPT2 models if they don't already exist.
+    :return:
+    """
     tokenizer = GPT2Tokenizer.from_pretrained(gpt2_size.x)
     model = GPT2Model.from_pretrained(gpt2_size.x)
 

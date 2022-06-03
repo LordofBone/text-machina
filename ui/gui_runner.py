@@ -12,6 +12,9 @@ from ml.download_model import get_and_save_models
 
 class GUIController:
     def __init__(self):
+        """
+        Initializes the GUI.
+        """
         self.root = Tk()
 
         self.root.title(window_title)
@@ -20,7 +23,7 @@ class GUIController:
 
         self.root.wm_state(window_setting)
 
-        self.root.geometry("800x600")
+        self.root.geometry(resolution)
 
         self.style = ttk.Style(self.root)
 
@@ -89,6 +92,18 @@ class GUIController:
     # thanks to https://stackoverflow.com/questions/8959815/restricting-the-value-in-tkinter-entry-widget
     def validate(self, action, index, value_if_allowed,
                  prior_value, text, validation_type, trigger_type, widget_name):
+        """
+        Validates the input of the text output length entry.
+        :param action:
+        :param index:
+        :param value_if_allowed:
+        :param prior_value:
+        :param text:
+        :param validation_type:
+        :param trigger_type:
+        :param widget_name:
+        :return:
+        """
         if value_if_allowed:
             try:
                 float(value_if_allowed)
@@ -99,12 +114,24 @@ class GUIController:
             return False
 
     def generate_button_threader(self):
+        """
+        Runs the sentence completion function in a thread.
+        :return:
+        """
         threading.Thread(target=self.generate_text, daemon=True).start()
 
     def download_button_threader(self):
+        """
+        Runs the download model function in a thread.
+        :return:
+        """
         threading.Thread(target=self.download_model, daemon=True).start()
 
     def download_model(self):
+        """
+        Downloads the GPT-2 model.
+        :return:
+        """
         self.lock_interface()
         self.main_frame.config(text="Downloading...")
         self.progress_bar.start()
@@ -114,9 +141,18 @@ class GUIController:
         self.unlock_interface()
 
     def change_model(self, event):
+        """
+        Changes the model size.
+        :param event:
+        :return:
+        """
         gpt2_size.x = self.model_option.get()
 
     def lock_interface(self):
+        """
+        Locks all parts of the interface to prevent the user clicking and typing while it is working.
+        :return:
+        """
         self.generate_button.configure(state=DISABLED)
         self.download_button.configure(state=DISABLED)
         self.text_entry.configure(state=DISABLED)
@@ -124,6 +160,10 @@ class GUIController:
         self.model_option_drop.configure(state=DISABLED)
 
     def unlock_interface(self):
+        """
+        Unlocks all parts of the interface to allow the user to click and type again.
+        :return:
+        """
         self.generate_button.configure(state=NORMAL)
         self.download_button.configure(state=NORMAL)
         self.text_entry.configure(state=NORMAL)
@@ -131,6 +171,10 @@ class GUIController:
         self.model_option_drop.configure(state=NORMAL)
 
     def generate_text(self):
+        """
+        Generates the text and outputs it to the GUI.
+        :return:
+        """
         self.lock_interface()
         output_length.x = self.ui_output_length.get()
         self.main_frame.config(text="Generating...")
@@ -153,6 +197,10 @@ class GUIController:
         self.text_entry.delete(0, END)
 
     def begin(self):
+        """
+        Starts the GUI.
+        :return:
+        """
         self.label.pack()
 
         self.root.mainloop()

@@ -1,8 +1,5 @@
-from ml.ml_functions import generate_morning_updates_from_seed
+from ml.ml_functions import run_sentence_completion_from_file
 
 if __name__ == "__main__":
-    try:
-        for update in generate_morning_updates_from_seed():
-            print(update)
-    except OSError:
-        raise Exception("Please run setup.py to download and save models")
+    print(run_sentence_completion_from_file())
+
