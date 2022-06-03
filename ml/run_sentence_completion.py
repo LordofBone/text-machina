@@ -16,7 +16,9 @@ def sentence_completer(prefix_text="this is an example sentence"):
     generated_text = text_generation(prefix_text, max_length=output_length.x, do_sample=sampling_enable,
                                      top_k=top_k_setting,
                                      top_p=top_p_setting,
-                                     num_return_sequences=num_return_sequences_setting)[0]
+                                     num_return_sequences=num_return_sequences_setting,
+                                     random_seed=random_seed_setting,
+                                     temperature=temperature_setting)[0]
     return generated_text['generated_text']
 
 
