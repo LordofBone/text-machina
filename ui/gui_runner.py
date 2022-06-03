@@ -71,12 +71,10 @@ class GUIController:
         self.generate_button = ttk.Button(self.main_frame, text="Generate",
                                           command=self.generate_button_threader)
         self.generate_button.pack(side="left")
-        self.generate_button.configure()
 
         self.download_button = ttk.Button(self.main_frame, text="Download",
                                           command=self.download_button_threader)
         self.download_button.pack(side="right")
-        self.download_button.configure()
 
         self.progress_bar = ttk.Progressbar(self.main_frame, orient="horizontal", length=500,
                                             mode="indeterminate")
@@ -122,12 +120,14 @@ class GUIController:
         self.generate_button.configure(state=DISABLED)
         self.download_button.configure(state=DISABLED)
         self.text_entry.configure(state=DISABLED)
+        self.length_entry.configure(state=DISABLED)
         self.model_option_drop.configure(state=DISABLED)
 
     def unlock_interface(self):
         self.generate_button.configure(state=NORMAL)
         self.download_button.configure(state=NORMAL)
         self.text_entry.configure(state=NORMAL)
+        self.length_entry.configure(state=NORMAL)
         self.model_option_drop.configure(state=NORMAL)
 
     def generate_text(self):
