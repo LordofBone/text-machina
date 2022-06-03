@@ -5,7 +5,7 @@ from tkinter import *
 from tkinter import ttk
 
 from config.gui_config import *
-from config.gpt2_config import gpt2_models, gpt2_size
+from config.gpt2_config import gpt2_models, gpt2_size, output_length
 from ml.ml_functions import run_sentence_completion
 from ml.download_model import get_and_save_models
 
@@ -28,6 +28,10 @@ class GUIController:
 
         self.person_reply = tk.StringVar()
 
+        self.ui_output_length = tk.IntVar()
+
+        self.ui_output_length.set(output_length.x)
+
         self.updates = []
 
         self.ind = 0
@@ -47,6 +51,15 @@ class GUIController:
         self.text_entry = ttk.Entry(self.main_frame, textvariable=self.person_reply)
         self.text_entry.pack(side="bottom")
         self.text_entry.configure(width=100)
+        self.text_entry.focus()
+
+        self.validate_cmd = (self.main_frame.register(self.validate),
+                             '%d', '%i', '%P', '%s', '%S', '%v', '%V', '%W')
+
+        self.length_entry = ttk.Entry(self.main_frame, textvariable=self.ui_output_length, validate='key',
+                                      validatecommand=self.validate_cmd)
+        self.length_entry.pack(side="bottom")
+        self.length_entry.configure(width=5)
 
         self.model_option = StringVar(self.main_frame)
 
@@ -74,6 +87,18 @@ class GUIController:
         self.path = Path(__file__).parent / "../images"
 
         self.label = Label(self.root)
+
+    # thanks to https://stackoverflow.com/questions/8959815/restricting-the-value-in-tkinter-entry-widget
+    def validate(self, action, index, value_if_allowed,
+                 prior_value, text, validation_type, trigger_type, widget_name):
+        if value_if_allowed:
+            try:
+                float(value_if_allowed)
+                return True
+            except ValueError:
+                return False
+        else:
+            return False
 
     def generate_button_threader(self):
         threading.Thread(target=self.generate_text, daemon=True).start()
@@ -107,6 +132,7 @@ class GUIController:
 
     def generate_text(self):
         self.lock_interface()
+        output_length.x = self.ui_output_length.get()
         self.main_frame.config(text="Generating...")
         self.text_output.delete('1.0', END)
         self.progress_bar.start()

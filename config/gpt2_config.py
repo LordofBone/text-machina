@@ -8,6 +8,10 @@ gpt2_models = ["gpt2", "gpt2-medium", "gpt2-large"]
 
 gpt2_size = Property()
 
+output_length = Property()
+
 default_gpt2_size = gpt2_models[0]
 
 gpt2_size.x = default_gpt2_size
+
+output_length.x = 200
