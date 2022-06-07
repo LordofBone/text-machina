@@ -13,12 +13,14 @@ def sentence_completer(prefix_text="this is an example sentence"):
     """
     text_generation = pipeline(task="text-generation", model=f"{models_dir}/{gpt2_size.x}",
                                tokenizer=f"{models_dir}/{gpt2_size.x}")
-    generated_text = text_generation(prefix_text, max_length=output_length.x, do_sample=sampling_enable,
+    generated_text = text_generation(prefix_text,
+                                     max_length=output_length.x,
+                                     do_sample=sampling_enable,
                                      top_k=top_k_setting,
                                      top_p=top_p_setting,
-                                     num_return_sequences=num_return_sequences_setting,
                                      random_seed=random_seed_setting,
-                                     temperature=temperature_setting)[0]
+                                     temperature=temperature_setting,
+                                     no_repeat_ngram_size=no_repeat_ngram_size_setting)[0]
     return generated_text['generated_text']
 
 
