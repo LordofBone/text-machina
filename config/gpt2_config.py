@@ -9,12 +9,13 @@ gpt2_models = ["gpt2", "gpt2-medium", "gpt2-large"]
 gpt2_size = Property()
 
 sampling_enable = True
-top_k_setting = 0
-top_p_setting = 0.80
+num_return_sequences_setting = 1
+top_k_setting = 38
+top_p_setting = 0.85
 # not sure if this works within the text-generation pipeline but adding anyway, '0' should mean no seed set
 random_seed_setting = 0
-temperature_setting = 0.75
-no_repeat_ngram_size_setting = 3
+temperature_setting = 0.80
+no_repeat_ngram_size_setting = 2
 
 output_length = Property()
 

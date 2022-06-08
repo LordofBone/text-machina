@@ -20,7 +20,8 @@ def sentence_completer(prefix_text="this is an example sentence"):
                                      top_p=top_p_setting,
                                      random_seed=random_seed_setting,
                                      temperature=temperature_setting,
-                                     no_repeat_ngram_size=no_repeat_ngram_size_setting)[0]
+                                     no_repeat_ngram_size=no_repeat_ngram_size_setting,
+                                     num_return_sequences=num_return_sequences_setting)[0]
     return generated_text['generated_text']
 
 
