@@ -49,7 +49,7 @@ class GUIController:
 
         self.text_output = Text(self.root, height=100, width=200)
         self.text_output.pack(side="top")
-        self.text_output.configure(background=item_colours, foreground=text_colour)
+        self.text_output.configure(background=item_colours, foreground=text_colour, state=DISABLED)
 
         self.text_entry = ttk.Entry(self.main_frame, textvariable=self.person_reply)
         self.text_entry.pack(side="bottom")
@@ -178,6 +178,7 @@ class GUIController:
         self.lock_interface()
         output_length.x = self.ui_output_length.get()
         self.main_frame.config(text="Generating...")
+        self.text_output.configure(state=NORMAL)
         self.text_output.delete('1.0', END)
         self.progress_bar.start()
 
@@ -192,6 +193,7 @@ class GUIController:
 
         self.progress_bar.stop()
         self.text_output.insert(tk.END, f"{generated_output[1]}")
+        self.text_output.configure(state=DISABLED)
         self.main_frame.config(text="Enter Text to Complete")
         self.unlock_interface()
         self.text_entry.delete(0, END)
