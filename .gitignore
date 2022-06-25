@@ -15,3 +15,5 @@ models/gpt/gpt2-large/*
 data/seeds/*
 
 !data/seeds/.gitkeep
+
+stuff.txt
