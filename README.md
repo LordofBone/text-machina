@@ -41,6 +41,13 @@ You can load this project into other systems and use it to generate text - just 
 Or call `use_text_generation_from_file` to load a text file from the `data/seeds` directory and generate text from the
 sentences within the text files there.
 
+###### Configuration
+
+The GUI can be configured by editing the `gui_config.py` file, this allows for resolution etc. to be changed.
+
+The text generator can be configured by editing the `gpt2_config.py` file, this allows for the text generator to be
+fine-tuned; you can find out more about the settings here: https://huggingface.co/blog/how-to-generate
+
 ### System Requirements
 
 ###### CPU
