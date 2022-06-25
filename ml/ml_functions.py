@@ -1,5 +1,5 @@
 from config.gpt2_config import dataset_dir
-from ml.run_text_completion import text_generator
+from ml.run_text_generation import text_generator
 from utils.load_bar_non_iterable import progress_bar
 
 
