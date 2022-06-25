@@ -4,11 +4,13 @@
 models/gpt/gpt2/*
 models/gpt/gpt2-medium/*
 models/gpt/gpt2-large/*
+models/gpt/gpt2-xl/*
 
 # keep the folders
 !models/gpt/gpt2/.gitkeep
 !models/gpt/gpt2-medium/.gitkeep
 !models/gpt/gpt2-large/.gitkeep
+!models/gpt/gpt2-xl/.gitkeep
 
 .idea
 
