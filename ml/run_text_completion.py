@@ -4,7 +4,7 @@ from config.gpt2_config import *
 
 
 # https://huggingface.co/blog/how-to-generate
-def sentence_completer(prefix_text="this is an example sentence"):
+def text_generator(prefix_text="this is an example sentence"):
     """
     Sets up a text-generation pipeline.
     Uses the GPT2 model to generate text.
@@ -26,4 +26,4 @@ def sentence_completer(prefix_text="this is an example sentence"):
 
 
 if __name__ == "__main__":
-    print(sentence_completer())
+    print(text_generator())

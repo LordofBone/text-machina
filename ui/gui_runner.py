@@ -1,12 +1,11 @@
 import threading
 import tkinter as tk
-from pathlib import Path
 from tkinter import *
 from tkinter import ttk
 
 from config.gui_config import *
 from config.gpt2_config import gpt2_models, gpt2_size, output_length
-from ml.ml_functions import run_sentence_completion
+from ml.ml_functions import run_text_generation
 from ml.download_model import get_and_save_models
 
 
@@ -84,8 +83,6 @@ class GUIController:
         self.progress_bar.pack(side="top")
 
         self.root.bind('<Return>', lambda event: self.generate_button_threader())
-
-        self.path = Path(__file__).parent / "../images"
 
         self.label = Label(self.root)
 
@@ -183,11 +180,11 @@ class GUIController:
         self.progress_bar.start()
 
         try:
-            generated_output = run_sentence_completion(self.person_reply.get())
+            generated_output = run_text_generation(self.person_reply.get())
         except OSError:
             get_and_save_models()
             try:
-                generated_output = run_sentence_completion(self.person_reply.get())
+                generated_output = run_text_generation(self.person_reply.get())
             except OSError:
                 raise Exception(f"Model {gpt2_size.x} not available, please check internet connection.")
 
