@@ -35,7 +35,16 @@ sentences in the text files under the `data/seeds` directory.
 
 ###### Integrating with other systems
 
-You can load this project into other systems and use it to generate text - just import everything in
+You can pull down the repo into the folder of the project you are working on, then append the system path of the
+text machina folder to the system path of the project.
+
+`text_machina_dir = os.path.join( path_to_text_machina )`
+
+`sys.path.append(text_machina_dir)`
+
+You will also need to install everything in requirements.txt and/or add the requirements to your project's requirements.txt
+
+Then just import everything in
 `integrate_text_generation` and call `use_text_generation` with a text input.
 
 Or call `use_text_generation_from_file` to load a text file from the `data/seeds` directory and generate text from the
